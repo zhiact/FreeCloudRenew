@@ -49,7 +49,9 @@ def  login_koyeb(email, password):
             print("复选框未选中")
     
         # 点击登录按钮
-        page.get_by_role("button", name="点击登录").click()
+        # 等待按钮出现并点击
+        page.wait_for_selector("text=点击登录")
+        page.click("text=点击登录")
 
         # 等待可能出现的错误消息或成功登录后的页面
         try:
