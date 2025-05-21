@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 import os
 import requests
-#from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import time
 
 
@@ -19,7 +19,7 @@ def send_telegram_message(message):
 
 def login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True)
+        browser = p.chromium.launch(headless=True)
 #         browser = p.chromium.launch(
 #     executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe",
 #     channel="chrome",  # 明确指定渠道
@@ -51,7 +51,9 @@ def login_koyeb(email, password):
             try:
                 page.wait_for_url("https://freecloud.ltd/member/index", timeout=5000)
                 page.locator('a[href="https://freecloud.ltd/server/lxc"]').all()[0].click()
-                page.wait_for_selector('a[data-modal="https://freecloud.ltd/server/detail/2128/renew?type=list"]').click()
+                time.sleep(5)
+                page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
+                # page.wait_for_selector('a[data-modal="https://freecloud.ltd/server/detail/2128/renew?type=list"]').click()
                 page.wait_for_selector("#submitRenew").click()
                 time.sleep(5)
                 return f"账号 {email} 登录成功!"
@@ -62,7 +64,7 @@ def login_koyeb(email, password):
             browser.close()
 
 if __name__ == "__main__":
-   # load_dotenv()
+    # load_dotenv()
     accounts = os.environ.get('WEBHOST', '').split()
     login_statuses = []
 
