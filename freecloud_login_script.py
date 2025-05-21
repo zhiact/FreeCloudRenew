@@ -19,7 +19,7 @@ def send_telegram_message(message):
 
 def  login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=False)
+        browser = p.firefox.launch(headless=True)
 #         browser = p.chromium.launch(
 #     executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe",
 #     channel="chrome",  # 明确指定渠道
@@ -37,6 +37,16 @@ def  login_koyeb(email, password):
         page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
         page.get_by_placeholder("请输入登录密码").click()
         page.get_by_placeholder("请输入登录密码").fill(password)
+        checkbox_selector = "input[name='agree']"
+        # 检查是否选中
+        is_checked = page.is_checked(checkbox_selector)
+
+        if is_checked:
+            print("复选框已选中")
+        else:
+            # 点击复选框
+            page.click(checkbox_selector)
+            print("复选框未选中")
     
         # 点击登录按钮
         page.get_by_role("button", name="点击登录").click()
