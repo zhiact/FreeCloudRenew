@@ -42,14 +42,14 @@ def login_koyeb(email, password):
         # 等待可能出现的错误消息或成功登录后的页面
         try:
             # 等待可能的错误消息
-            error_message = page.wait_for_selector('.MuiAlert-message', timeout=5000)
+            error_message = page.wait_for_selector('//div[contains(@class, "jq-icon-error") and contains(@style, "display: none")]',30000)
             if error_message:
                 error_text = error_message.inner_text()
                 return f"账号 {email} 登录失败: {error_text}"
         except:
             # 如果没有找到错误消息,检查是否已经跳转到仪表板页面
             try:
-                page.wait_for_url("https://freecloud.ltd/member/index", timeout=5000)
+                page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
                 page.locator('a[href="https://freecloud.ltd/server/lxc"]').all()[0].click()
                 time.sleep(5)
                 page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
@@ -59,6 +59,7 @@ def login_koyeb(email, password):
                 return f"账号 {email} 登录成功!"
             except Exception  as e:
                 print(f"发生异常{e}")
+                print(f"{ page.inner_html()}")
                 return f"账号 {email} 登录失败: 未能跳转到仪表板页面"
         finally:
             browser.close()
