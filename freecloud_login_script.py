@@ -19,7 +19,7 @@ def send_telegram_message(message):
 
 def  login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=False)
+        browser = p.firefox.launch(headless=True)
 #         browser = p.chromium.launch(
 #     executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe",
 #     channel="chrome",  # 明确指定渠道
