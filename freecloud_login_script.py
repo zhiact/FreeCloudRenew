@@ -17,7 +17,7 @@ def send_telegram_message(message):
     response = requests.post(url, json=payload)
     return response.json()
 
-def login_koyeb(email, password):
+def async  login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.firefox.launch(headless=True)
 #         browser = p.chromium.launch(
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     for account in accounts:
         email, password = account.split(':')
-        status = login_koyeb(email, password)
+        status = await login_koyeb(email, password)
         login_statuses.append(status)
         print(status)
 
