@@ -31,6 +31,8 @@ def  login_koyeb(email, password):
 
         # 访问登录页面  
         page.goto("https://freecloud.ltd/login", timeout=60000)
+        page.wait_for_selector("text=点击登录", timeout=60000)
+
 
         # 输入邮箱和密码
         page.get_by_placeholder("用户名/邮箱/手机号").click()
@@ -50,7 +52,6 @@ def  login_koyeb(email, password):
     
         # 点击登录按钮
         # 等待按钮出现并点击
-        page.wait_for_selector("text=点击登录")
         page.click("text=点击登录")
 
         # 等待可能出现的错误消息或成功登录后的页面
