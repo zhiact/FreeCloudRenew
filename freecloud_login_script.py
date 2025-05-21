@@ -78,6 +78,8 @@ def  login_koyeb(email, password):
                 print(f"发生异常{e}")
                 full_html =  page.content()  # 获取完整页面 HTML
                 print(full_html)
+                page.screenshot(path="failure_screenshot.png")
+                with open("failure_page.html", "w", encoding="utf-8") as f:f.write(page.content())
                 return f"账号 {email} 登录失败: 未能跳转到仪表板页面"
         finally:
             browser.close()
