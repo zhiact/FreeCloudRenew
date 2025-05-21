@@ -25,7 +25,9 @@ def login_koyeb(email, password):
 #     channel="chrome",  # 明确指定渠道
 #     headless=False
 # )
-        page = browser.new_page()
+        incognito_context = browser.new_context()
+
+        page = incognito_context.new_page()
 
         # 访问登录页面  
         page.goto("https://freecloud.ltd/login", timeout=60000)
