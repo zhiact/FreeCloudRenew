@@ -40,4 +40,4 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           WEBHOST: ${{ secrets.WEBHOST }}
         run: |
-          python freecloud_login_script.py
+          set PYTHONIOENCODING=utf8 && python freecloud_login_script.py
