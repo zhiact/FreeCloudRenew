@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 import os
 import requests
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import time
 
 
@@ -62,7 +62,7 @@ def login_koyeb(email, password):
             browser.close()
 
 if __name__ == "__main__":
-    load_dotenv()
+   # load_dotenv()
     accounts = os.environ.get('WEBHOST', '').split()
     login_statuses = []
 
