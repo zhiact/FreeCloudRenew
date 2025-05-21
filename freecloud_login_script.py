@@ -42,7 +42,7 @@ def login_koyeb(email, password):
         # 等待可能出现的错误消息或成功登录后的页面
         try:
             # 等待可能的错误消息
-            error_message = page.wait_for_selector('//div[contains(@class, "jq-icon-error") and contains(@style, "display: none")]',timeout=30000)
+            error_message = page.wait_for_selector('//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]',timeout=30000)
             if error_message:
                 error_text = error_message.inner_text()
                 return f"账号 {email} 登录失败: {error_text}"
@@ -59,7 +59,8 @@ def login_koyeb(email, password):
                 return f"账号 {email} 登录成功!"
             except Exception  as e:
                 print(f"发生异常{e}")
-                print(f"{ page.inner_html()}")
+                full_html = await page.content()  # 获取完整页面 HTML
+                print(full_html)
                 return f"账号 {email} 登录失败: 未能跳转到仪表板页面"
         finally:
             browser.close()
