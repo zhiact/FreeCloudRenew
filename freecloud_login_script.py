@@ -17,9 +17,9 @@ def send_telegram_message(message):
     response = requests.post(url, json=payload)
     return response.json()
 
-def async  login_koyeb(email, password):
+def  login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True)
+        browser = p.firefox.launch(headless=False)
 #         browser = p.chromium.launch(
 #     executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe",
 #     channel="chrome",  # 明确指定渠道
@@ -57,11 +57,13 @@ def async  login_koyeb(email, password):
                 page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
                 # page.wait_for_selector('a[data-modal="https://freecloud.ltd/server/detail/2128/renew?type=list"]').click()
                 page.wait_for_selector("#submitRenew").click()
+                full_html =  page.content()  # 获取完整页面 HTML
+                print(full_html)
                 time.sleep(5)
                 return f"账号 {email} 登录成功!"
             except Exception  as e:
                 print(f"发生异常{e}")
-                full_html = await page.content()  # 获取完整页面 HTML
+                full_html =  page.content()  # 获取完整页面 HTML
                 print(full_html)
                 return f"账号 {email} 登录失败: 未能跳转到仪表板页面"
         finally:
@@ -74,7 +76,7 @@ if __name__ == "__main__":
 
     for account in accounts:
         email, password = account.split(':')
-        status = await login_koyeb(email, password)
+        status = login_koyeb(email, password)
         login_statuses.append(status)
         print(status)
 
