@@ -52,10 +52,13 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 def login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.firefox.launch(headless=True)
-        context = browser.new_context()
+        # context = browser.new_context()
+        context =  browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         page = context.new_page()
 
         try:
+            page.bring_to_front()  # 将页面带到最前
+
             # 打开登录页
             page.goto("https://freecloud.ltd/login", timeout=60000)
             page.wait_for_selector("text=点击登录", timeout=60000)
