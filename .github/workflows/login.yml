@@ -34,15 +34,7 @@ jobs:
       - name: Install Playwright Browsers  # 安装浏览器
         run: |
           python -m playwright install firefox --with-deps
-        
-      - name: Upload failure artifacts
-        if: failure() # 仅当上一步失败时运行
-        uses: actions/upload-artifact@v4
-        with:
-            name: playwright-failure-artifacts
-            path: |
-              failure_screenshot.png
-              failure_page.html   
+      
 
       - name: 运行登录脚本
         env:
@@ -51,3 +43,12 @@ jobs:
           WEBHOST: ${{ secrets.WEBHOST }}
         run: |
           set PYTHONIOENCODING=utf8 && xvfb-run python freecloud_login_script.py
+          
+      - name: Upload failure artifacts
+        if: failure() # 仅当上一步失败时运行
+        uses: actions/upload-artifact@v4
+        with:
+            name: playwright-failure-artifacts
+            path: |
+              failure_screenshot.png
+              failure_page.html   
