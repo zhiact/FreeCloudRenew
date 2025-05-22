@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="en" class="no-touch"><head>
+    <meta charset="utf-8">
+    <title>会员中心 - Freecloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="https://freecloud.ltd/favicon.ico">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/css/bootstrap.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/plugs/toast/jquery.toast.min.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/plugs/confirm/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/css/bootstrap-slider.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/css/plugin.css?4.15">
+    <link rel="stylesheet" href="https://freecloud.ltd/skin/newcloud/css/user.css?4.15">
+    <link rel="stylesheet" href="https://freecloud.ltd/user/font/flags/flags.min.css">
+    <link rel="stylesheet" href="https://freecloud.ltd/home/font/iconfont/iconfont.css?4.15">
+    <script id="AsyncLink"></script>
+    
+    <script type="text/javascript">
+        var app = {
+            host : "https://freecloud.ltd/",
+            language : {"key":"chinese","name":"\u7b80\u4f53\u4e2d\u6587","lang":"zh-cn","class":"flag-icon flag-icon-cn","support":"all","locale":"zh_CN"},
+            language_real: 'chinese',
+            lang: {"psy_defaultMessage":"\u4e0d\u6b63\u786e\u7684\u503c.","psy_email":"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u7535\u5b50\u90ae\u7bb1\u5730\u5740.","psy_url":"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u94fe\u63a5.","psy_urlstrict":"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u94fe\u63a5.","psy_number":"\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u6570\u5b57.","psy_digits":"\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u53f7\u7801.","psy_dateIso":"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u65e5\u671f\u683c\u5f0f (YYYY-MM-DD).","psy_alphanum":"\u8bf7\u8f93\u5165\u5b57\u6bcd\u6216\u6570\u5b57.","psy_phone":"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u7535\u8bdd\u53f7\u7801.","psy_notnull":"\u4e0d\u80fd\u4e3a\u7a7a\u503c.","psy_notblank":"\u8bf7\u8f93\u5165\u503c.","psy_required":"\u8fd9\u662f\u4e00\u4e2a\u5fc5\u586b\u9879.","psy_regexp":"\u8f93\u5165\u503c\u9a8c\u8bc1\u65e0\u6548.","psy_min":"\u8f93\u5165\u503c\u8bf7\u5927\u4e8e\u6216\u7b49\u4e8e %s.","psy_max":"\u8f93\u5165\u503c\u8bf7\u5c0f\u4e8e\u6216\u7b49\u4e8e %s.","psy_range":"\u8f93\u5165\u503c\u5e94\u8be5\u5728 %s \u5230 %s \u4e4b\u95f4.","psy_minlength":"\u8bf7\u8f93\u5165\u81f3\u5c11 %s \u4e2a\u5b57\u7b26.","psy_maxlength":"\u8bf7\u8f93\u5165\u81f3\u591a %s \u4e2a\u5b57\u7b26.","psy_rangelength":"\u8f93\u5165\u503c\u5e94\u8be5\u5728 %s \u5230 %s \u4e4b\u95f4.","psy_mincheck":"\u8bf7\u81f3\u5c11\u9009\u62e9 %s \u4e2a\u9009\u9879.","psy_maxcheck":"\u8bf7\u9009\u62e9\u4e0d\u8d85\u8fc7 %s \u4e2a\u9009\u9879.","psy_rangecheck":"\u8f93\u5165\u503c\u5e94\u8be5\u5728 %s \u5230 %s \u4e4b\u95f4.","psy_equalto":"\u8f93\u5165\u503c\u4e0d\u540c.","app_confirm_del":"\u786e\u8ba4\u5220\u9664\u5417\uff1f","app_confirm_batch":"\u786e\u8ba4\u6279\u91cf\u5904\u7406\u5417\uff1f","app_confirm_please":"\u8bf7\u786e\u8ba4\uff01","app_confirm_box":"\u786e\u8ba4\u6846\uff01","app_confirm_buy":"\u786e\u8ba4\u8d2d\u4e70","app_confirm":"\u786e\u8ba4","app_cancel":"\u53d6\u6d88","app_default":"\u9ed8\u8ba4","app_please_select":"\u8bf7\u9009\u62e9\u6279\u91cf\u64cd\u4f5c\u9879","app_please_checked":"\u8bf7\u81f3\u5c11\u52fe\u9009\u4e00\u9879\u8bb0\u5f55","app_alert_danger":"\u9519\u8bef\u63d0\u793a","app_alert_success":"\u6210\u529f\u63d0\u793a","app_upload_error":"\u4e0a\u4f20\u9519\u8bef","app_status_abnormal":"\u72b6\u6001\u5f02\u5e38","app_update_title":"\u7cfb\u7edf\u7248\u672c\u66f4\u65b0","app_system_tip":"\u7cfb\u7edf\u63d0\u793a","app_seconds":"\u79d2","app_submiting":"\u63d0\u4ea4\u4e2d\uff0c\u8bf7\u7a0d\u5019...","app_recharge_continue":"\u5145\u503c\u5b8c\u6210\uff0c\u7ee7\u7eed\u64cd\u4f5c","app_recharge_go":"\u53bb\u5145\u503c","app_ok":"\u786e\u5b9a","app_yes":"\u662f","app_no":"\u5426","app_please_login":"\u8bf7\u5148\u767b\u9646"}
+        };
+    </script>
+    <!--[if lt IE 9]>
+    <script src="https://freecloud.ltd/user/js/ie/respond.min.js"></script>
+    <script src="https://freecloud.ltd/user/js/ie/html5.js"></script>
+    <![endif]-->
+    <script src="https://freecloud.ltd/user/js/jquery.min.js"></script>
+    <script src="https://freecloud.ltd/user/js/jquery.cookie.js"></script>
+    <script src="https://freecloud.ltd/user/plugs/jquery.pjax.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://freecloud.ltd/user/js/bootstrap.js"></script>
+    <script src="https://freecloud.ltd/user/js/bootstrap-hover-dropdown.min.js"></script>
+    <!-- plugs -->
+    <script src="https://freecloud.ltd/user/plugs/toast/jquery.toast.min.js"></script>
+    <script src="https://freecloud.ltd/user/plugs/confirm/jquery-confirm.min.js"></script>
+    <!-- parsley -->
+    <script src="https://freecloud.ltd/user/js/parsley/parsley.min.js"></script>
+    <!-- layer -->
+    <script src="https://freecloud.ltd/home/js/layer/layer.js"></script><link rel="stylesheet" href="https://freecloud.ltd/home/js/layer/theme/default/layer.css?v=3.1.0" id="layuicss-layer">
+    <!-- echart -->
+    <script type="text/javascript" src="https://freecloud.ltd/user/js/charts/echarts.common.min.js?4.15"></script>
+    <!-- vue -->
+    <script type="text/javascript" src="https://freecloud.ltd/home/js/vue/vue@2.6.11"></script>
+    <!-- app -->
+    <script src="https://freecloud.ltd/user/js/app.js?4.15"></script>
+    <script src="https://freecloud.ltd/user/js/app.data.js?4.15"></script>
+    <!--<script src="https://freecloud.ltd/home/js/chinese.js"></script>-->
+    
+    <script id="AsyncScript"></script>
+    
+</head>
+<body class="navbar-fixed lang-chinese">
+
+<header id="header" class="navbar">
+        <ul class="nav navbar-nav navbar-avatar pull-right" data-pjax="" data-load="1">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                <!--<span class="hidden-sm-only">hua123</span>-->
+                <span class="thumb-small avatar inline"><img src="https://freecloud.ltd/user/images/avatar.jpg" class="img-circle"></span>
+                <b class="caret hidden-sm-only"></b>
+            </a>
+            <div class="dropdown-menu header-user">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-right">
+                                                                                    <a class="iconfont iconfont-shimingrenzheng" href="https://freecloud.ltd/member/auth" title="未实名认证"></a>
+                                                                                                                <a class="iconfont iconfont-shoujirenzheng" href="https://freecloud.ltd/member/secure" title="未绑定手机"></a>
+                                                                                    <a class="iconfont iconfont-youxiang text-primary" href="https://freecloud.ltd/member/secure" title="已绑定邮箱"></a>
+                                                    </div>
+                        <span>hua123</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-6 m-b-small">
+                                <a href="https://freecloud.ltd/member/info"><i class="icon-user"></i> 会员资料</a>
+                            </div>
+                            <div class="col-6 m-b-small">
+                                <a href="https://freecloud.ltd/member/secure"><i class="icon-shield"></i> 安全认证</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="https://freecloud.ltd//news/support/"><i class="icon-exclamation-sign"></i> 帮助文档</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="https://freecloud.ltd/logout"><i class="icon-power-off"></i> 退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+        <ul class="nav navbar-nav pull-right">
+                <li class="hidden-sm dropdown" data-pjax="" data-load="1"><a class="icon-desktop" href="https://freecloud.ltd/" target="_blank" title="返回官网">返回官网</a></li>
+        <li class="hidden-sm dropdown" data-pjax="" data-load="1"><a class="icon-list-alt" href="https://freecloud.ltd//news/support/" target="_blank" title="帮助文档">帮助文档</a></li>
+        <li class="hidden-sm dropdown" data-pjax="" data-load="1"><a class="icon-bell" href="https://freecloud.ltd//news/" target="_blank" title="服务公告">服务公告</a></li>
+                        
+        <li class="hidden-sm dropdown" data-pjax="" data-load="1">
+            <a class="icon-file-text-alt" data-toggle="dropdown" data-hover="dropdown">工单
+                            </a>
+            <div class="dropdown-menu header-user">
+                <div class="panel">
+                                        <div class="panel-footer">
+                        <a href="https://freecloud.ltd/member/worksystem?id=add" class="btn btn-mini btn-primary"><i class="icon-plus"></i> 新建工单</a>
+                        <a href="https://freecloud.ltd/member/worksystem" class="btn btn-mini btn-white">全部工单</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="hidden-sm dropdown" data-pjax="" data-load="1">
+            <a class="icon-yen" data-toggle="dropdown" data-hover="dropdown">财务</a>
+            <div class="dropdown-menu header-user">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-right">
+                            <a href="https://freecloud.ltd/member/cost?amount=1" class="btn btn-mini btn-primary">充值</a>
+                        </div>
+                        <div style="padding-top:5px;">
+                            <span class="text-muted">余额：</span>
+                            <span>0.00</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="https://freecloud.ltd/member/cost"><i class="icon-yen"></i> 账户总览</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="https://freecloud.ltd/member/consume"><i class="icon-exchange"></i> 收支明细</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <!--<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="切换语言">
+                <i class="flag-icon flag-icon-cn"></i> &lt;!&ndash;<b class="caret"></b>&ndash;&gt;
+            </a>
+            <ul id="changeLang" class="dropdown-menu">
+                                                                                <li><a data-href="https://freecloud.ltd/welcome/changeLang/chinesehk"><i class="flag-icon flag-icon-hk"></i> &nbsp;繁体中文</a></li>
+                                                                <li><a data-href="https://freecloud.ltd/welcome/changeLang/english"><i class="flag-icon flag-icon-gb"></i> &nbsp;English</a></li>
+                                
+            </ul>
+        </li>-->
+            </ul>
+    <button type="button" class="btn btn-link pull-left nav-toggle hidden-lg" data-toggle="class:slide-nav slide-nav-left" data-target="body">
+        <i class="icon-reorder icon-xlarge text-default"></i>
+    </button>
+</header>
+<nav id="nav" class="nav-primary visible-lg" data-pjax="" data-load="1">
+    <a class="nav-brand" onclick="window.open('https://freecloud.ltd/')"><img src="https://freecloud.ltd/home/img/logo.png"></a>
+    <ul class="nav affix-top" data-spy="affix" data-offset-top="50">
+        <li class="dropdown-submenu">
+    <a href="https://freecloud.ltd/member/index"><i class="icon-dashboard"></i><span>概览</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+
+<li class="group">
+    <span>产品</span>
+</li>
+<li class="dropdown-submenu active">
+    <a href="https://freecloud.ltd/server/lxc"><i class="iconfont iconfont-kongjian"></i><span>轻量应用服务器</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+
+<li class="group">
+    <span>账户</span>
+</li>
+<li class="dropdown-submenu">
+    <a href="https://freecloud.ltd/member/info"><i class="iconfont iconfont-bussiness-man"></i><span>账号管理</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+<li class="dropdown-submenu">
+    <a href="https://freecloud.ltd/member/cost"><i class="iconfont iconfont-caiwu"></i><span>财务中心</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+<li class="dropdown-submenu">
+    <a href="https://freecloud.ltd/member/worksystem"><i class="icon-comment-alt"></i><span>支持与服务</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+<li class="dropdown-submenu">
+    <a href="https://freecloud.ltd/news/support"><i class="iconfont iconfont-qita"></i><span>帮助文档</span></a>
+    <!--<ul class="dropdown-menu">
+                                                                                                        
+    </ul>-->
+</li>
+
+
+    </ul>
+</nav>
+
+<section id="content">
+<section id="APPLIST" class="main padder"><div class="clearfix page-head"><h4 class="m-b-none"><div class="btn-group m-r-small m-b-small"><i class="iconfont iconfont-kongjian"></i> 轻量应用服务器
+        </div> <div data-pjax="" data-load="1" class="btn-group m-b-small"><a href="https://freecloud.ltd/server/lxc" class="btn btn-small btn-white">
+                                我的轻量应用服务器
+            </a></div> <div data-pjax="" data-load="1" class="btn-group m-b-small"><a href="https://freecloud.ltd/server/purchase_lxc" class="btn btn-small btn-white"><i class="icon-shopping-cart"></i>                 购买轻量应用服务器
+            </a></div></h4></div> <section class="panel"><header class="panel-heading"><ul data-pjax="" data-load="1" class="nav nav-tabs pull-left"><li class="active"><a href="https://freecloud.ltd/server/lxc?state=normal">正常</a></li> <li><a href="https://freecloud.ltd/server/lxc?state=near">即将过期</a></li> <li><a href="https://freecloud.ltd/server/lxc?state=expire">已过期</a></li></ul></header> <form action="https://freecloud.ltd/server/lxc" method="get" id="mySearchForm" data-pjax="" data-load="1" accept-charset="utf-8" class="form-inline m-b-none"><div class="btn-group input-group input-group-search"><a data-toggle="dropdown" class="btn btn-small btn-white"><span class="dropdown-label">云主机IP</span> <span class="caret"></span></a> <ul class="dropdown-menu dropdown-select"><li data-value="ip" class="active"><a><input type="radio" name="i" value="1" checked="checked" style="">云主机IP</a></li> <li data-value="id"><a><input type="radio" name="i" value="1" style="">云主机编号</a></li> <li data-value="server_name"><a><input type="radio" name="i" value="1" style="">云主机别名</a></li> <li data-value="mac"><a><input type="radio" name="i" value="1" style="">云主机MAC地址</a></li> <li data-value="specs_id"><a><input type="radio" name="i" value="1" style="">所属线路</a></li> <li class="divider"></li> <li data-value="order_by"><a><input type="radio" name="i" value="1" style="">选择排序</a></li></ul> <input type="hidden" name="sk" value="ip" class="sk" style=""> <input type="text" name="sq" value="" placeholder="输入云主机IP精确搜索" autocomplete="off" class="sq input-small form-control" style=""> <div class="dropdown-input"></div> <button type="submit" class="btn btn-small btn-white m-b-mini"><i class="icon-search"></i></button></div> <input type="hidden" name="state" value="normal" style=""></form> <form action="https://freecloud.ltd/server/lxc" id="formList" target="iframeNew" method="post" accept-charset="utf-8" class="m-b-none"><div class="pull-out m-t-small text-small"><div class="table-responsive"><table class="table table-hover table-server m-b-none"><thead><tr class="active"><td width="20"><input type="checkbox" style=""></td> <td width="20"></td> <td nowrap="nowrap">编号/别名</td> <td nowrap="nowrap">地域/线路/可用区</td> <td nowrap="nowrap" style="padding-left: 0px;">配置</td> <td nowrap="nowrap" style="padding-left: 0px;">硬盘</td> <td nowrap="nowrap" style="padding-left: 0px;">带宽</td> <td nowrap="nowrap">IP/MAC</td> <td nowrap="nowrap">开通时间/到期时间</td> <td nowrap="nowrap" class="text-center">自动续费</td> <td nowrap="nowrap" class="text-center">订单状态</td> <td nowrap="nowrap" class="text-right">操作</td></tr></thead> <tbody id="kvmList" class="text-black"><tr id="kvmItem2363" class="kvm_item"><td><input type="checkbox" name="ids[]" value="1697" style=""></td> <td><!----></td> <td><a data-toggle="modal" data-target="#serverModal" data-uri="https://freecloud.ltd/server/detail/2363" class="text-info modal_uri">
+                        #<span>2363</span></a> <div class="word-break" style="max-width: 100px;"><a id="serverName_2363" data-toggle="popover" data-html="true" data-placement="right" data-content="<input class='form-control input-small' value=''></div>" class="server_name text-muted" data-original-title="" title=""><i class="icon-edit"></i><span>MyServer</span></a></div></td> <td><span>Freecloud</span> <span class="text-muted">/</span> <span>Freecloud</span><br> <span>美国S1</span> <!----></td> <td style="padding-left: 0px;"><span data-toggle="tooltip" data-placement="top" data-html="true" title="" class="btn btn-xs btn-white" style="font-weight: normal;" data-original-title="<div class=&quot;text-left&quot;>操作系统：alpine-3.19<Br>CPU：1核<br>内存：64MB<br>带宽：200Mbps<br>硬盘：1GB</div>"><i class="iconcolor iconcolor-duocaozuoxitong"></i> <span>1核64MB</span></span></td> <td style="padding-left: 0px;"><span>1GB</span></td> <td style="padding-left: 0px;"><div><span>200Mbps</span> <span>（峰值）</span></div> <div><span>流量包：200GB/月</span></div></td> <td><span data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="2604:abc0:103:415:a1::13c"><span>2604:abc0:103:415:a1::13c</span> <span class="text-gray">(公网)</span></span> <div><span class="text-muted mac">0A:C3:3D:5D:2E:EC</span></div></td> <td><div>2025-05-17 10:01:34</div> <span class="text-gray">2025-05-28 15:55:33</span>
+                    （<span>6天后</span>）
+                    <!----></td> <td class="text-center"><span class="text-muted"><i class="icon-remove"></i></span></td> <td class="text-center"><div class="status"><b class="text-success"><i class="icon-circle"></i> 正常
+                        </b> <!----></div> <!----></td> <td class="text-right"><a data-toggle="modal" data-target="#serverModal" data-uri="https://freecloud.ltd/server/detail/2363" class="text-info btn_detail modal_uri">管理</a> <a data-modal="https://freecloud.ltd/server/detail/2363/renew?type=list" data-modal-title="轻量应用服务器续费 #2363" data-modal-class="col-lg-6 col-offset-3" class="text-info">续费</a> <a data-modal="https://freecloud.ltd/server/detail/2363/upgrade?type=list" data-modal-title="轻量应用服务器升级 #2363" data-modal-class="col-lg-6 col-offset-3" class="text-info">升级</a></td></tr> <!----></tbody></table></div></div> <footer class="panel-footer"><div class="row" style="padding-top: 5px;"><div class="form-inline col-lg-4 col-sm-4 text-center-sm"><a onclick="batchRenew()" class="btn btn-mini btn-white">批量续费</a> <a data-submit="run" data-uri="https://freecloud.ltd/server/get_data/batch" data-confirm="确认批量开机吗？" class="btn btn-mini btn-white batch_action"><i class="icon-play-circle text-success"></i> 开机</a> <a data-submit="stop" data-uri="https://freecloud.ltd/server/get_data/batch" data-confirm="确认批量关机吗？" class="btn btn-mini btn-white batch_action"><i class="icon-off text-danger"></i> 关机</a></div> <div class="col-lg-8 col-sm-8 text-right text-center-sm"><ul data-pjax="" data-replace="1" class="pagination pagination-small m-t-none m-b-none"><li class="active"><a>1/1页&nbsp;共1条记录</a></li><li class="pagination-size"><div class="btn-group dropup text-small"><button data-toggle="dropdown" class="btn btn-white btn-small dropdown-toggle"><span class="size-curr">10</span> <span class="caret text-muted"></span></button><ul class="dropdown-menu pull-right text-center size" style="min-width: auto; white-space: nowrap;"><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=1000" data-ci-pagination-size="1000">1000</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=500" data-ci-pagination-size="500">500</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=100" data-ci-pagination-size="100">100</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=50" data-ci-pagination-size="50">50</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=40" data-ci-pagination-size="40">40</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=30" data-ci-pagination-size="30">30</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=20" data-ci-pagination-size="20">20</a></li><li><a href="https://freecloud.ltd/server/lxc?_pjax=%23content&amp;size=10" data-ci-pagination-size="10">10</a></li></ul></div></li></ul></div></div></footer></form></section></section>
+
+<div id="serverModal" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog modal-large">
+        <div class="modal-content" id="serverModalPjax"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+
+
+<footer id="footer" class="text-center hidden-sm sty-footer">
+    <!--<p class="fnav">
+        <a>关于我们</a><span></span>
+        <a>法律声明及隐私条款</a><span></span>
+        <a>联系我们</a>
+    </p>-->
+    <div style="line-height:1;">
+       Copyright © 2022-2025 freecloud.ltd All Rights Reserved. Freecloud 版权所有
+    </div>
+<div class="text-center"><a href="https://www.xmbillion.com" target="_blank" class="text-muted">Powered by © Prokvm云服务器管理系统</a></div></footer>
+
+<a href="#" class="hide slide-nav-block" data-toggle="class:slide-nav slide-nav-left" data-target="body"></a>
+<div id="block" class="block hide"></div>
+<iframe name="iframeNew" class="block hide"></iframe>
+<script type="text/javascript" src="https://freecloud.ltd/user/js/bootstrap-slider.min.js"></script>
+
+<div style="display:none"></div>
+
+
+
+<script type="text/javascript">$($('#footer').length>0?'#footer':'body').append("<div class='text-center'><a href='https://www.xmbillion.com' target='_blank' class='text-muted'>Powered by © Prokvm云服务器管理系统</a></div>");</script><div class="layui-layer-move"></div><div class="jconfirm jconfirm-light bl_dialog"><div class="jconfirm-bg" style="transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1);"></div><div class="jconfirm-scrollpane"><div class="container"><div class="row"><div class="jconfirm-box-container col-lg-6 col-offset-3"><div class="jconfirm-box jconfirm-hilight-shake" role="dialog" aria-labelledby="jconfirm-box92811" tabindex="-1" style="margin-top: 202.5px; margin-bottom: 50px; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1); transition-property: all, margin;"><div class="jconfirm-closeIcon" style="display: block;">×</div><div class="jconfirm-title-c"><span class="jconfirm-icon-c"></span><span class="jconfirm-title">轻量应用服务器续费 #2363</span></div><div class="jconfirm-content-pane" style="height: 259px; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1);"><div class="jconfirm-content" id="jconfirm-box92811" style="">
+<section id="APPVUE" class="main m-b-none"><form action="https://freecloud.ltd/server/detail/2363/renew" id="renewForm" target="iframeNew" method="post" accept-charset="utf-8" class="form-parsley form-horizontal m-b-none"><div class="form-group"><div class="col-lg-12 text-center"><div id="btnGroupAmount" data-toggle="buttons" class="btn-group"><p><b class="text-muted">选择续费时长</b></p> <label data-amount="0" class="btn btn-small btn-white active"><input type="radio" name="month" value="1" checked="checked" style=""> <i class="icon-ok icon-large text-active"></i>7天
+                                    </label></div></div></div> <div class="form-group"><div class="col-lg-6 col-offset-3 text-center"><select name="coupon_id" class="form-control"><option value="0">使用代金券/折扣券</option> </select></div></div> <div class="form-group m-b-none"><div class="col-lg-12 text-center"><div class="form-control-static text-muted"><!----> <!----> <b>需支付：<span id="Amount" class="text-danger text-large">0.00</span>元</b> <!----></div></div></div> <div class="form-group m-b-none"><div class="col-lg-12 text-center"><input type="hidden" name="submit" value="1" style=""> <a type="button" onclick="app.jc_dialog.close();" class="btn btn-white">放弃</a> <button id="submitRenew" type="submit" data-loading-text="续费中..." class="btn btn-primary disabled" disabled="disabled">续费中...</button></div></div></form></section>
+
+
+
+
+
+</div></div><div class="jconfirm-buttons"><button type="button" class="btn btn-default">ok</button><button type="button" class="btn btn-default">close</button></div><div class="jconfirm-clear"></div></div></div></div></div></div></div><div class="layui-layer-shade" id="layui-layer-shade2" times="2" style="z-index: 19891015; background-color: rgb(0, 0, 0); opacity: 0.3;"></div><div class="layui-layer layui-layer-dialog layui-layer-msg layer-anim layer-anim-00" id="layui-layer2" type="dialog" times="2" showtime="0" contype="string" style="z-index: 19891016; top: 327px; left: 548px;"><div id="" class="layui-layer-content layui-layer-padding"><i class="layui-layer-ico layui-layer-ico16"></i>提交中，请稍候...</div><span class="layui-layer-setwin"></span></div></body></html>

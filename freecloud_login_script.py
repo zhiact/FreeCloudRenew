@@ -52,8 +52,7 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 def login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.firefox.launch(headless=True)
-        # context = browser.new_context()
-        context =  browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        context = browser.new_context()
         page = context.new_page()
 
         try:
@@ -71,7 +70,11 @@ def login_koyeb(email, password):
             checkbox = "input[name='agree']"
             if not page.is_checked(checkbox):
                 page.check(checkbox)
-
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+            with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                    f.write(page.content())
+            traceback.print_exc()
             # 点击登录
             page.click("text=点击登录")
 
