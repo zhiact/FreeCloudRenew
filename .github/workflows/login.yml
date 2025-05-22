@@ -50,14 +50,6 @@ jobs:
         run: |
           set PYTHONIOENCODING=utf8 && xvfb-run python freecloud_login_script.py
 
-      # 上传 Playwright video
-      - name: Upload Playwright video
-        if: always() # 始终运行，无论上一步成功或失败
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-video
-          path: test-results/ # 视频文件所在的路径，确保你的脚本将视频保存在这里
-
       # 上传 Playwright trace
       - name: Upload Playwright trace
         if: always() # 始终运行
@@ -68,7 +60,7 @@ jobs:
 
       # 上传失败 artifacts
       - name: Upload failure artifacts
-        if: failure() # 仅当上一步失败时运行
+        if: always() # 仅当上一步失败时运行
         uses: actions/upload-artifact@v4
         with:
           name: playwright-failure-artifacts
