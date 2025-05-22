@@ -6,6 +6,9 @@ from datetime import datetime
 import traceback
 import time
 
+# 定义视频保存目录
+video_dir = "test-results/videos" # 你可以根据需要更改这个路径
+
 def send_telegram_message(message):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
@@ -52,7 +55,13 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 def login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.firefox.launch(headless=True)
-        context = browser.new_context()
+        context = browser.new_context(
+            # 设置视频保存目录
+            record_video_dir=video_dir,
+            # 可选：配置其他视频选项，例如大小
+            # record_video_size={"width": 640, "height": 480},
+            trace='on' # 启用跟踪
+        )
         page = context.new_page()
 
         try:
@@ -118,6 +127,7 @@ def login_koyeb(email, password):
             return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
 
         finally:
+            context.close()
             browser.close()
 
 
