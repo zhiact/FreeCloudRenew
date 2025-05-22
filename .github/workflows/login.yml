@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04 # 使用更新的 Ubuntu 系统
 
     steps:
       - name: Checkout repository
@@ -23,13 +23,13 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb x11-utils libx11-dev x11-xserver-utils
+          sudo apt-get install -y xvfb x11-utils libx11-dev x11-xserver-utils \
+            libxkbfile-dev libxfont-dev
           pip install playwright requests
 
       - name: Start Xvfb and run script
         run: |
-          # 启动 Xvfb 虚拟显示，并添加调试输出
-          Xvfb :99 -screen 0 1280x1024x24 -nolisten tcp -noreset &> xvfb.log &
+          Xvfb :99 -screen 0 1024x768x24 -nolisten tcp -nocursor &> xvfb.log &
           export DISPLAY=:99
           sleep 3
           cat xvfb.log  # 输出 Xvfb 日志以供分析
