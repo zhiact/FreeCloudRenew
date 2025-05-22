@@ -39,7 +39,8 @@ jobs:
 
       - name: Install Playwright Browsers # 安装浏览器
         run: |
-          python -m playwright install firefox --with-deps
+          pip install playwright
+          python -m playwright install --with-deps
 
       - name: 运行登录脚本
         env:
