@@ -62,6 +62,7 @@ def login_koyeb(email, password):
             # record_video_size={"width": 640, "height": 480},
             # trace='on' # 启用跟踪
         )
+        context.tracing.start()
         page = context.new_page()
 
         try:
@@ -127,6 +128,7 @@ def login_koyeb(email, password):
             return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
 
         finally:
+            context.tracing.stop()
             context.close()
             browser.close()
 
