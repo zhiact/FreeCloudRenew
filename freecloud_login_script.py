@@ -94,7 +94,7 @@ def login_koyeb(email, password):
                 return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
         
             # 登录成功跳转
-            page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
+            page.wait_for_url("https://freecloud.ltd/member/index", timeout=60000)
 
             # 访问续费页面
             page.locator('a[href="https://freecloud.ltd/server/lxc"]').first.click()
