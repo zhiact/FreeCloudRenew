@@ -60,7 +60,7 @@ def login_koyeb(email, password):
             record_video_dir=video_dir,
             # 可选：配置其他视频选项，例如大小
             # record_video_size={"width": 640, "height": 480},
-            trace='on' # 启用跟踪
+            # trace='on' # 启用跟踪
         )
         page = context.new_page()
 
