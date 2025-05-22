@@ -2,8 +2,9 @@ from playwright.sync_api import sync_playwright
 import os
 import requests
 # from dotenv import load_dotenv
+from datetime import datetime
+import traceback
 import time
-
 
 def send_telegram_message(message):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
@@ -17,89 +18,121 @@ def send_telegram_message(message):
     response = requests.post(url, json=payload)
     return response.json()
 
-def  login_koyeb(email, password):
+
+def check_renewal_status(page,selector, invalid_texts,max_num=10):
+    num =1
+    result_text=""
+    while num< max_num:
+        try:
+            num+=1
+            time.sleep(1)
+            # 尝试查找元素(设置1秒超时避免长时间阻塞)
+            element = page.wait_for_selector(
+                selector,
+                timeout=500,
+                state="visible"
+            )
+            if not element:
+                continue
+            # 获取元素文本
+            current_text = element.inner_text().strip()
+            print(f"{current_text}")
+            # 检查文本是否有效
+            if current_text and current_text not in invalid_texts:
+                result_text = current_text
+                break  # 获取到有效结果，退出循环
+        
+        except Exception as e:
+            # 可以记录日志，但不需要处理
+            print(f"查询尝试失败: {e}")
+        
+    
+    return f"{result_text}"
+
+def login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.firefox.launch(headless=True)
-#         browser = p.chromium.launch(
-#     executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe",
-#     channel="chrome",  # 明确指定渠道
-#     headless=False
-# )
-        incognito_context = browser.new_context()
+        context = browser.new_context()
+        page = context.new_page()
 
-        page = incognito_context.new_page()
-
-        # 访问登录页面  
-        page.goto("https://freecloud.ltd/login", timeout=60000)
-        page.wait_for_selector("text=点击登录", timeout=60000)
-
-
-        # 输入邮箱和密码
-        page.get_by_placeholder("用户名/邮箱/手机号").click()
-        page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
-        page.get_by_placeholder("请输入登录密码").click()
-        #page.get_by_placeholder("请输入登录密码").fill(password)
-        checkbox_selector = "input[name='agree']"
-        # 检查是否选中
-        is_checked = page.is_checked(checkbox_selector)
-
-        if is_checked:
-            print("复选框已选中")
-        else:
-            # 点击复选框
-            page.click(checkbox_selector)
-            print("复选框未选中")
-    
-        # 点击登录按钮
-        # 等待按钮出现并点击
-        page.click("text=点击登录")
-
-        # 等待可能出现的错误消息或成功登录后的页面
         try:
-            # 等待可能的错误消息
-            error_message = page.wait_for_selector('//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]',timeout=30000)
-            if error_message:
-                error_text = error_message.inner_text()
-                return f"账号 {email} 登录失败: {error_text}"
-        except:
-            # 如果没有找到错误消息,检查是否已经跳转到仪表板页面
+            # 打开登录页
+            page.goto("https://freecloud.ltd/login", timeout=60000)
+            page.wait_for_selector("text=点击登录", timeout=60000)
+
+            # 填写邮箱和密码
+            page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
+            page.get_by_placeholder("请输入登录密码").fill(password)
+
+            # 勾选协议
+            checkbox = "input[name='agree']"
+            if not page.is_checked(checkbox):
+                page.check(checkbox)
+
+            # 点击登录
+            page.click("text=点击登录")
+
+            # 错误提示
             try:
-                page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
-                page.locator('a[href="https://freecloud.ltd/server/lxc"]').all()[0].click()
-                time.sleep(5)
-                page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
-                # page.wait_for_selector('a[data-modal="https://freecloud.ltd/server/detail/2128/renew?type=list"]').click()
-                page.wait_for_selector("#submitRenew").click()
-                full_html =  page.content()  # 获取完整页面 HTML
-                print(full_html)
-                time.sleep(5)
-                return f"账号 {email} 登录成功!"
-            except Exception  as e:
-                print(f"发生异常{e}")
-                full_html =  page.content()  # 获取完整页面 HTML
-                print(full_html)
-                page.screenshot(path="failure_screenshot.png")
-                with open("failure_page.html", "w", encoding="utf-8") as f:f.write(page.content())
-                return f"账号 {email} 登录失败: 未能跳转到仪表板页面"
+                error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
+                error = page.wait_for_selector(error_sel, timeout=8000)
+                if error:
+                    return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
+            except:
+                pass
+
+            # 登录成功跳转
+            page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
+
+            # 访问续费页面
+            page.locator('a[href="https://freecloud.ltd/server/lxc"]').first.click()
+            page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
+            page.wait_for_selector("#submitRenew").click()
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+            with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                f.write(page.content())
+            result = check_renewal_status(page,'.layui-layer.layui-layer-dialog.layui-layer-msg',["", "无结果", "null", "undefined", "加载中"] )
+            result_text = result if result else "续费失败"
+
+
+            return f"✅ 账号 `{email}` {result_text}"
+
+        except Exception as e:
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+            with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                f.write(page.content())
+            traceback.print_exc()
+            return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
+
         finally:
             browser.close()
 
-if __name__ == "__main__":
+
+def main():
     # load_dotenv()
     accounts = os.environ.get('WEBHOST', '').split()
-    login_statuses = []
+    results = []
+
+    if not accounts:
+        error = "⚠️ 未配置任何账号（WEBHOST 变量为空）"
+        print(error)
+        send_telegram_message(error)
+        return
 
     for account in accounts:
-        email, password = account.split(':')
-        status = login_koyeb(email, password)
-        login_statuses.append(status)
-        print(status)
+        try:
+            email, password = account.split(":")
+            result = login_koyeb(email.strip(), password.strip())
+        except ValueError:
+            result = f"❌ 账号配置格式错误: `{account}`"
+        results.append(result)
+        print(result)
 
-    if login_statuses:
-        message = "WEBHOST登录状态:\n\n" + "\n".join(login_statuses)
-        result = send_telegram_message(message)
-        print("消息已发送到Telegram:", result)
-    else:
-        error_message = "没有配置任何账号"
-        send_telegram_message(error_message)
-        print(error_message)
+    message = "🔐 *WEBHOST 登录状态汇总:*\n\n" + "\n".join(results)
+    send_telegram_message(message)
+
+
+if __name__ == "__main__":
+    main()
