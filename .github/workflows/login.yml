@@ -30,6 +30,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install playwright aiofiles requests
           pip install playwright requests python-dotenv # 如果你重新使用 dotenv
+          sudo apt-get update
           sudo apt-get install -y xvfb x11-utils libx11-dev
 
       - name: Install Playwright Browsers # 安装浏览器
