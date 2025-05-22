@@ -61,6 +61,11 @@ def login_koyeb(email, password):
             # 可选：配置其他视频选项，例如大小
             # record_video_size={"width": 640, "height": 480},
             # trace='on' # 启用跟踪
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            viewport={"width": 1280, "height": 720},
+            locale="zh-CN",
+            timezone_id="Asia/Shanghai"
+
         )
         context.tracing.start()
         page = context.new_page()
