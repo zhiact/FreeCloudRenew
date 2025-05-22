@@ -88,13 +88,17 @@ def login_koyeb(email, password):
             # 点击登录
             page.click("text=点击登录")
 
-            error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
-            error = page.wait_for_selector(error_sel, timeout=8000)
-            if error:
-                return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
-        
+            # 错误提示
+            try:
+                error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
+                error = page.wait_for_selector(error_sel, timeout=8000)
+                if error:
+                    return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
+            except :
+                pass
+
             # 登录成功跳转
-            page.wait_for_url("https://freecloud.ltd/member/index", timeout=60000)
+            page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
 
             # 访问续费页面
             page.locator('a[href="https://freecloud.ltd/server/lxc"]').first.click()
