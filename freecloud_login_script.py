@@ -67,7 +67,7 @@ def login_koyeb(email, password):
             timezone_id="Asia/Shanghai"
 
         )
-        context.tracing.start()
+        # context.tracing.start()
         page = context.new_page()
 
         try:
@@ -133,7 +133,7 @@ def login_koyeb(email, password):
             return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
 
         finally:
-            context.tracing.stop()
+            # context.tracing.stop()
             context.close()
             browser.close()
 
