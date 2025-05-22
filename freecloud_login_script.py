@@ -38,7 +38,7 @@ def  login_koyeb(email, password):
         page.get_by_placeholder("用户名/邮箱/手机号").click()
         page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
         page.get_by_placeholder("请输入登录密码").click()
-        page.get_by_placeholder("请输入登录密码").fill(password)
+        #page.get_by_placeholder("请输入登录密码").fill(password)
         checkbox_selector = "input[name='agree']"
         # 检查是否选中
         is_checked = page.is_checked(checkbox_selector)
