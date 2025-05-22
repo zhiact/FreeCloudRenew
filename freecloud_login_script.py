@@ -79,6 +79,11 @@ def login_koyeb(email, password):
                 if error:
                     return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
             except:
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+                with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                    f.write(page.content())
+                traceback.print_exc()
                 pass
 
             # 登录成功跳转
