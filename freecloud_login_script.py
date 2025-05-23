@@ -54,7 +54,7 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 
 def login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.webkit.launch(headless=True)
         context = browser.new_context(
             # 设置视频保存目录
             record_video_dir=video_dir,
