@@ -54,7 +54,7 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 
 def login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.webkit.launch(headless=True)
+        browser = p.firefox.launch(headless=True)
         context = browser.new_context(
             # 设置视频保存目录
             record_video_dir=video_dir,
@@ -117,19 +117,18 @@ def login_koyeb(email, password):
                 return f"✅ 账号 `{email}` {result_text}"
 
             except Exception as e:
+                continue
                 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
                 page.screenshot(path=f"failure_screenshot_{timestamp}.png")
                 with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
                     f.write(page.content())
                 traceback.print_exc()
-                continue  
                 return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
 
             finally:
                 # context.tracing.stop()
                 context.close()
                 browser.close()
-                break  
 
 
 def main():
