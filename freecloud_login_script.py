@@ -69,12 +69,14 @@ def login_koyeb(email, password):
         )
         # context.tracing.start()
         page = context.new_page()
+        page.goto("https://freecloud.ltd/login", timeout=60000)
+
         while True:
             try:
                 page.bring_to_front()  # 将页面带到最前
 
                 # 打开登录页
-                page.goto("https://freecloud.ltd/login", timeout=60000)
+            
                 page.wait_for_selector("text=点击登录", timeout=60000)
 
                 # 填写邮箱和密码
