@@ -87,6 +87,20 @@ def login_koyeb(email, password):
                 page.check(checkbox)
             # 点击登录
             page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            time.sleep(20)
+            page.click("text=点击登录")
+            
+
 
             # 错误提示
             try:
