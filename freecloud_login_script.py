@@ -54,7 +54,7 @@ def check_renewal_status(page,selector, invalid_texts,max_num=10):
 
 def login_koyeb(email, password):
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True)
+        browser = p.webkit.launch(headless=True)
         context = browser.new_context(
             # 设置视频保存目录
             record_video_dir=video_dir,
@@ -69,68 +69,63 @@ def login_koyeb(email, password):
         )
         # context.tracing.start()
         page = context.new_page()
-        page.goto("https://freecloud.ltd/login", timeout=60000)
 
-        while True:
+        try:
+            page.bring_to_front()  # 将页面带到最前
+
+            # 打开登录页
+            page.goto("https://freecloud.ltd/login", timeout=60000)
+            page.wait_for_selector("text=点击登录", timeout=60000)
+
+            # 填写邮箱和密码
+            page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
+            page.get_by_placeholder("请输入登录密码").fill(password)
+
+            # 勾选协议
+            checkbox = "input[name='agree']"
+            if not page.is_checked(checkbox):
+                page.check(checkbox)
+            # 点击登录
+            page.click("text=点击登录")
+
+            # 错误提示
             try:
-                page.bring_to_front()  # 将页面带到最前
+                error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
+                error = page.wait_for_selector(error_sel, timeout=8000)
+                if error:
+                    return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
+            except :
+                pass
 
-                # 打开登录页
-            
-                page.wait_for_selector("text=点击登录", timeout=60000)
+            # 登录成功跳转
+            page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
 
-                # 填写邮箱和密码
-                page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
-                page.get_by_placeholder("请输入登录密码").fill(password)
-
-                # 勾选协议
-                checkbox = "input[name='agree']"
-                if not page.is_checked(checkbox):
-                    page.check(checkbox)
-                # 点击登录
-                page.click("text=点击登录")
-
-                # 错误提示
-                try:
-                    error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
-                    error = page.wait_for_selector(error_sel, timeout=8000)
-                    if error:
-                        return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
-                except :
-                    pass
-
-                # 登录成功跳转
-                page.wait_for_url("https://freecloud.ltd/member/index", timeout=30000)
-
-                # 访问续费页面
-                page.locator('a[href="https://freecloud.ltd/server/lxc"]').first.click()
-                page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
-                page.wait_for_selector("#submitRenew").click()
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                page.screenshot(path=f"failure_screenshot_{timestamp}.png")
-                with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
-                    f.write(page.content())
-                result = check_renewal_status(page,'.layui-layer.layui-layer-dialog.layui-layer-msg',["", "无结果", "null", "undefined", "加载中"] )
-                result_text = result if result else "续费失败"
+            # 访问续费页面
+            page.locator('a[href="https://freecloud.ltd/server/lxc"]').first.click()
+            page.wait_for_selector('a[data-modal*="/server/detail/"][data-modal*="/renew"]').click()
+            page.wait_for_selector("#submitRenew").click()
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+            with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                f.write(page.content())
+            result = check_renewal_status(page,'.layui-layer.layui-layer-dialog.layui-layer-msg',["", "无结果", "null", "undefined", "加载中"] )
+            result_text = result if result else "续费失败"
 
 
-                return f"✅ 账号 `{email}` {result_text}"
+            return f"✅ 账号 `{email}` {result_text}"
 
-            except Exception as e:
-                continue
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                page.screenshot(path=f"failure_screenshot_{timestamp}.png")
-                with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
-                    f.write(page.content())
-                traceback.print_exc()
-                return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
+        except Exception as e:
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            page.screenshot(path=f"failure_screenshot_{timestamp}.png")
+            with open(f"failure_page_{timestamp}.html", "w", encoding="utf-8") as f:
+                f.write(page.content())
+            traceback.print_exc()
+            return f"❌ 账号 `{email}` 登录失败：{str(e)}（已保存调试信息）"
 
-            finally:
-                # context.tracing.stop()
-                context.close()
-                browser.close()
-
-
+        finally:
+            # context.tracing.stop()
+            context.close()
+            browser.close()
 def main():
     # load_dotenv()
     accounts = os.environ.get('WEBHOST', '').split()
